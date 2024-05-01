@@ -1,0 +1,7 @@
+
+numpy
+pandas>=2.2.1
+mcap
+opencv-python-headless
+pillow
+tqdm

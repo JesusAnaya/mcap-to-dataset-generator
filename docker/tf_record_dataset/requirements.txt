@@ -1,0 +1,7 @@
+
+numpy
+pandas>=2.2.1
+opencv-python-headless
+pillow
+tqdm
+tensorflow[and-cuda]>=2.0.0

@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  dataset_generator:
+    build:
+      context: ./
+      dockerfile: docker/mcap_dataset/Dockerfile
+    image: mcap_dataset_generator:latest
+    container_name: mcap_dataset_generator
+    volumes:
+      - ./recording:/home/recording
+      - ./datasets:/home/datasets
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+    user: 1000:1000
+    command: python3 dataset_generator.py --mcap_file_path /home/recording/redosding_2024-03-29T02-47-36.mcap --root_path /home/datasets
+
+  tf_record_generator:
+    build:
+      context: ./
+      dockerfile: docker/tf_record_dataset/Dockerfile
+    image: tf_record_generator:latest
+    container_name: tf_record_generator
+    volumes:
+      - ./datasets:/var/datasets
+      - ./tf_records:/var/tf_records
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    user: 1000:1000
+    command: python3 tf_record_generator.py --dataset_path /var/datasets --dest_path /var/tf_records
+    runtime: nvidia
+    privileged: true
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
