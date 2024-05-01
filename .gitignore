@@ -21,8 +21,12 @@ sdist/
 var/
 wheels/
 share/python-wheels/
+datasets/
+recording/
 *.egg-info/
 .installed.cfg
+.idea
+.vscode
 *.egg
 MANIFEST
 
